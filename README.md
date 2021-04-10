@@ -40,6 +40,9 @@ $ git clone https://github.com/Azuki-Azusa/LAN_Media_Viewer.git
 ## Contributors
 
 Azu機
+
 [Weibo](https://weibo.com/cj980129)
+
 [Twitter](https://twitter.com/c980129)
+
 [GitHub](https://github.com/Azuki-Azusa)

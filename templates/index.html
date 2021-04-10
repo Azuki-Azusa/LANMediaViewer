@@ -24,11 +24,6 @@
             line-height: 60px;
             box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         }
-
-        .el-button {
-            z-index: 2;
-        }
-
     </style>
 </head>
 
@@ -37,18 +32,35 @@
         <el-container>
             <el-header height="auto" align="center">
                 <h1>LAN Video Viewer</h1>
+                <el-radio-group v-model="radio" @change="changeRadio">
+                    <el-radio :label="1">视频</el-radio>
+                    <el-radio :label="2">图片</el-radio>
+                    <el-radio :label="3">音乐</el-radio>
+                </el-radio-group>
             </el-header>
             <el-container>
                 <el-aside width="auto">
-                    <el-button v-if="left_button" @click="clickAside" icon="el-icon-d-arrow-left" size="mini" circle></el-button>
-                    <el-button v-if="!left_button" @click="clickAside" icon="el-icon-d-arrow-right" size="mini" circle></el-button>
-                    <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-button v-if="left_button" @click="clickAside" icon="el-icon-d-arrow-left" size="mini" circle>
+                    </el-button>
+                    <el-button v-if="!left_button" @click="clickAside" icon="el-icon-d-arrow-right" size="mini" circle>
+                    </el-button>
+                    <el-tree style="overflow: hidden;" :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                 </el-aside>
                 <el-main align="center">
-                    <video :src="src" controls="controls"></video>
+                    <div id="videoViewer" v-if="showVideo" style="width: 100%;">
+                        <video style="max-width: 90%;" :src="videoSrc" controls="controls"></video>
+                    </div>
+                    <div id="imageViewer" v-if="radio==2" style="width: 100%;">
+                        WIP
+                        <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image>
+                    </div>
+                    <div id="musicViewer" v-if="radio==3" style="width: 100%;">
+                        WIP
+                    </div>
                 </el-main>
             </el-container>
         </el-container>
+        <el-backtop></el-backtop>
     </div>
 </body>
 <!-- import Vue before Element -->
@@ -69,16 +81,24 @@
                     label: 'label',
                     path: 'path',
                 },
+                urls: [],
                 left_button: true,
-                src: ''
+                videoSrc: '',
+                radio: 1,
+                showVideo: false
             };
         },
         methods: {
             handleNodeClick(data) {
-                if (!data.children) {
-                    this.$set(this, "src", data.path)
+                if (!data.children && this.radio == 1) {
+                    this.showVideo = true
+                    this.videoSrc = data.path
                 }
             },
+            changeRadio() {
+
+            },
+            
             getVideoList() {
                 var _this = this
                 axios.get('/video')
@@ -91,14 +111,14 @@
             },
             clickAside() {
                 if (this.left_button) {
-                    $('.el-tree').animate({'width': '0px'}, 100)
+                    $('.el-tree').animate({ 'width': '0px' }, 100)
                     this.left_button = false
                 }
                 else {
-                    $('.el-tree').animate({'width': '100%'}, 100)
+                    $('.el-tree').animate({ 'width': '100%' }, 100)
                     this.left_button = true
                 }
-                
+
             }
         },
         created: function () {
