@@ -17,14 +17,20 @@ A micro Web server for watching videos on PC with other devices conecting to the
 
 ## Install
 
-This project uses [node](http://nodejs.org) and [npm](https://npmjs.com). Go check them out if you don't have them locally installed.
+### git
 
 ```sh
-$ npm install --global standard-readme-spec
+$ git clone https://github.com/Azuki-Azusa/LAN_Media_Viewer.git
 ```
+
+### download zip
+
+在GitHub上点击Code下拉菜单，点选Download ZIP。
+本地解压即可。
 
 ## Usage
 
+在`public`中创建名为`video`的文件夹。
 将视频放进根目录的`public\video`文件夹中。
 可多个文件夹存入。
 
