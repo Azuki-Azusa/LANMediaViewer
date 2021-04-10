@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="public/assets/element-ui/lib/theme-chalk/index.css">
+    <link rel="shortcut icon" href="public/assets/favicon.ico">
+    <style>
+        .el-aside {
+            color: #333;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .el-header {
+            color: #333;
+            line-height: 60px;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .el-main {
+            color: #333;
+            line-height: 60px;
+            box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .el-button {
+            z-index: 2;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <el-container>
+            <el-header height="auto" align="center">
+                <h1>LAN Video Viewer</h1>
+            </el-header>
+            <el-container>
+                <el-aside width="auto">
+                    <el-button v-if="left_button" @click="clickAside" icon="el-icon-d-arrow-left" size="mini" circle></el-button>
+                    <el-button v-if="!left_button" @click="clickAside" icon="el-icon-d-arrow-right" size="mini" circle></el-button>
+                    <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                </el-aside>
+                <el-main align="center">
+                    <video :src="src" controls="controls"></video>
+                </el-main>
+            </el-container>
+        </el-container>
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="public/assets/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="public/assets/element-ui/lib/index.js"></script>
+<script src="public/assets/axios/dist/axios.min.js"></script>
+<script src="public/assets/jquery-3.6.0.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                data: [],
+                defaultProps: {
+                    children: 'children',
+                    label: 'label',
+                    path: 'path',
+                },
+                left_button: true,
+                src: ''
+            };
+        },
+        methods: {
+            handleNodeClick(data) {
+                if (!data.children) {
+                    this.$set(this, "src", data.path)
+                }
+            },
+            getVideoList() {
+                var _this = this
+                axios.get('/video')
+                    .then(function (response) {
+                        _this.$set(_this, "data", response.data.video.children)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            clickAside() {
+                if (this.left_button) {
+                    $('.el-tree').animate({'width': '0px'}, 100)
+                    this.left_button = false
+                }
+                else {
+                    $('.el-tree').animate({'width': '100%'}, 100)
+                    this.left_button = true
+                }
+                
+            }
+        },
+        created: function () {
+            this.getVideoList()
+        }
+    })
+</script>
+
+</html>
