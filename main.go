@@ -13,7 +13,7 @@ import (
 
 func main() {
 	showIP()
-	//gin.SetMode(gin.ReleaseMode)
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	loadTemplates(r)
 	route(r)
