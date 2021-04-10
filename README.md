@@ -34,6 +34,9 @@ $ git clone https://github.com/Azuki-Azusa/LAN_Media_Viewer.git
 将视频放进根目录的`public\video`文件夹中。
 可多个文件夹存入。
 
+打开`main.exe`，记住出现的ip地址。
+在你希望观看的终端的浏览器上输入上述ip地址（加上端口）。
+
 ## Contributors
 
 Azu機
