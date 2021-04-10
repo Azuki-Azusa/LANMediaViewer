@@ -47,8 +47,8 @@
                     <el-tree style="overflow: hidden;" :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
                 </el-aside>
                 <el-main align="center">
-                    <div id="videoViewer" v-if="showVideo" style="width: 100%;">
-                        <video style="max-width: 90%;" :src="videoSrc" controls="controls"></video>
+                    <div id="videoViewer" v-if="showVideo && radio==1" style="width: 100%;">
+                        <video style="max-width: 100%;" :src="videoSrc" controls="controls"></video>
                     </div>
                     <div id="imageViewer" v-if="radio==2" style="width: 100%;">
                         WIP
@@ -95,6 +95,7 @@
                     this.videoSrc = data.path
                 }
             },
+            
             changeRadio() {
 
             },

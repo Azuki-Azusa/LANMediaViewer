@@ -3,12 +3,16 @@
 A micro Web server for watching videos on PC with other devices conecting to the same LAN.
 一个用于在其他连接同一局域网的设备上观看PC上的视频的微Web服务器。
 
+
+
 ## Table of Contents
 
 - [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [Contributors](#contributors)
+- [Developing](#developing)
+- [Log](#log)
 
 
 ## Background
@@ -25,10 +29,18 @@ $ git clone https://github.com/Azuki-Azusa/LAN_Media_Viewer.git
 
 ### download zip
 
-在GitHub上点击Code下拉菜单，点选Download ZIP。
+Click `Code` and select `Download ZIP` on this GitHub Page.
+Unzip it.
+
+在GitHub上点击`Code`下拉菜单，点选`Download ZIP`。
 本地解压即可。
 
 ## Usage
+
+Create a folder named `video` in folder named `public`.
+Put all videos(or folders) you want to watch in folder `public/video`.
+
+Open `main.exe` and connect to the showed ip address via the browser on your device.
 
 在`public`中创建名为`video`的文件夹。
 将视频放进根目录的`public\video`文件夹中。
@@ -46,3 +58,11 @@ Azu機
 [Twitter](https://twitter.com/c980129)
 
 [GitHub](https://github.com/Azuki-Azusa)
+
+## Developing
+- 在PC本地保存播放进度。
+- 添加图片浏览器。
+- 添加音乐播放器。
+
+## Log
+- 2021.4.11 First Commit
