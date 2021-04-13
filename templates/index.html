@@ -31,7 +31,7 @@
     <div id="app">
         <el-container>
             <el-header height="auto" align="center">
-                <h1>LAN Video Viewer</h1>
+                <h1>LAN Media Viewer</h1>
                 <el-radio-group v-model="radio" @change="changeRadio">
                     <el-radio :label="1">视频</el-radio>
                     <el-radio :label="2">图片</el-radio>
@@ -44,15 +44,18 @@
                     </el-button>
                     <el-button v-if="!left_button" @click="clickAside" icon="el-icon-d-arrow-right" size="mini" circle>
                     </el-button>
-                    <el-tree style="overflow: hidden;" :data="data" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+                    <el-tree style="overflow: hidden;" :data="data" :props="defaultProps" @node-click="handleNodeClick">
+                    </el-tree>
                 </el-aside>
                 <el-main align="center">
                     <div id="videoViewer" v-if="showVideo && radio==1" style="width: 100%;">
                         <video style="max-width: 100%;" :src="videoSrc" controls="controls"></video>
                     </div>
                     <div id="imageViewer" v-if="radio==2" style="width: 100%;">
-                        WIP
-                        <el-image v-for="url in urls" :key="url" :src="url" lazy></el-image>
+                        <div v-for="img in imgs">
+                            <span :id="img.label">{{ img.label }}</span>
+                            <el-image style="width: 100%" :key="img.url" :src="img.url" lazy></el-image>
+                        </div>
                     </div>
                     <div id="musicViewer" v-if="radio==3" style="width: 100%;">
                         WIP
@@ -81,7 +84,7 @@
                     label: 'label',
                     path: 'path',
                 },
-                urls: [],
+                imgs: [],
                 left_button: true,
                 videoSrc: '',
                 radio: 1,
@@ -94,12 +97,29 @@
                     this.showVideo = true
                     this.videoSrc = data.path
                 }
+                else if (this.radio == 2) {
+                    if (data.children) {
+                        this.imgs = []
+                        data.children.forEach(element => {
+                            if (!element.children) {
+                                this.imgs.push({
+                                    url: element.path,
+                                    label: element.label
+                                })
+                            }
+                        });
+                    }
+                    else {
+                        $('html , body').animate({ scrollTop: $("[id='" + data.label +"']").offset().top + 'px' }, 1000);
+                    }
+                }
             },
-            
-            changeRadio() {
 
+            changeRadio() {
+                if (this.radio == 1) this.getVideoList()
+                else if (this.radio == 2) this.getImageList()
             },
-            
+
             getVideoList() {
                 var _this = this
                 axios.get('/video')
@@ -110,6 +130,18 @@
                         console.log(error);
                     });
             },
+
+            getImageList() {
+                var _this = this
+                axios.get('/image')
+                    .then(function (response) {
+                        _this.$set(_this, "data", response.data.image.children)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
             clickAside() {
                 if (this.left_button) {
                     $('.el-tree').animate({ 'width': '0px' }, 100)

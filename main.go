@@ -22,6 +22,7 @@ func main() {
 
 // loat static file
 func loadTemplates(r *gin.Engine) {
+	r.Delims("{{{", "}}}")
 	r.LoadHTMLGlob("templates/*")
 	r.StaticFS("/public", http.Dir("./public"))
 }
@@ -35,6 +36,18 @@ func route(r *gin.Engine) {
 	r.GET("/video", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"video": getObject("public/video"),
+		})
+	})
+
+	r.GET("/image", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"image": getObject("public/image"),
+		})
+	})
+
+	r.GET("/music", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"music": getObject("public/music"),
 		})
 	})
 }
